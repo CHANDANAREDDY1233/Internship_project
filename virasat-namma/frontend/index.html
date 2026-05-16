@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Virasat-Namma · ವಿರಾಸತ್-ನಮ್ಮ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Tiro+Kannada&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════════════ SPLASH SCREEN ═══════════════ -->
+<div id="splash" class="splash">
+  <div class="splash-mandala"></div>
+  <div class="splash-content">
+    <div class="splash-icon">🛕</div>
+    <h1 class="splash-title">Virasat-Namma</h1>
+    <p class="splash-sub">ವಿರಾಸತ್-ನಮ್ಮ</p>
+    <p class="splash-tagline">Karnataka's Hidden Heritage Guide</p>
+    <div class="splash-loader"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<!-- ═══════════════ MAIN APP ═══════════════ -->
+<div id="app" class="app hidden">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-icon">🛕</span>
+      <span class="topbar-title">Virasat-Namma</span>
+    </div>
+    <div class="topbar-right">
+      <button class="lang-toggle" id="langToggle" onclick="toggleLang()">ಕನ್ನಡ</button>
+      <div class="gps-indicator" id="gpsIndicator" title="Location Status">
+        <span class="gps-dot"></span>
+        <span id="gpsText">Locating...</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- LOCATION BADGE -->
+  <div class="location-badge" id="locationBadge">
+    <span>📍</span> <span id="coordDisplay">Acquiring GPS...</span>
+  </div>
+
+  <!-- TAB CONTENT AREA -->
+  <main class="main-content" id="mainContent">
+
+    <!-- ── DISCOVER TAB ── -->
+    <section id="tab-discover" class="tab-section active">
+      <div class="section-header">
+        <h2 class="section-title" data-en="Heritage Sites Nearby" data-kn="ಸಮೀಪದ ಪರಂಪರಾ ತಾಣಗಳು">Heritage Sites Nearby</h2>
+        <div class="radius-control">
+          <label data-en="Radius:" data-kn="ತ್ರಿಜ್ಯ:">Radius:</label>
+          <select id="radiusSelect" onchange="loadSites()">
+            <option value="25">25 km</option>
+            <option value="50" selected>50 km</option>
+            <option value="100">100 km</option>
+            <option value="500">All Karnataka</option>
+          </select>
+        </div>
+      </div>
+      <div id="sitesGrid" class="sites-grid">
+        <div class="loading-sites">
+          <div class="spinner"></div>
+          <p>Discovering heritage near you...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MAP TAB ── -->
+    <section id="tab-map" class="tab-section">
+      <div id="map"></div>
+      <div class="map-legend">
+        <span class="legend-dot reported"></span><span>Reported</span>
+        <span class="legend-dot active"></span><span>Active Site</span>
+        <span class="legend-dot cleaned"></span><span>Cleaned</span>
+      </div>
+    </section>
+
+    <!-- ── QR SCANNER TAB ── -->
+    <section id="tab-qr" class="tab-section">
+      <div class="qr-container">
+        <div class="qr-frame">
+          <div class="qr-corner tl"></div>
+          <div class="qr-corner tr"></div>
+          <div class="qr-corner bl"></div>
+          <div class="qr-corner br"></div>
+          <div class="qr-scan-line"></div>
+          <div class="qr-placeholder">
+            <span>📷</span>
+            <p data-en="Point camera at QR code" data-kn="QR ಕೋಡ್ ಕಡೆ ಕ್ಯಾಮೆರಾ ತೋರಿಸಿ">Point camera at QR code</p>
+          </div>
+        </div>
+        <p class="qr-sub" data-en="Scan the QR code at any heritage site to unlock its Hidden Fact" data-kn="ಅಡಗಿದ ಸಂಗತಿಯನ್ನು ತಿಳಿಯಲು QR ಕೋಡ್ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ">Scan the QR code at any heritage site to unlock its Hidden Fact</p>
+
+        <div class="manual-qr">
+          <p class="manual-label">— Or enter code manually —</p>
+          <div class="manual-input-row">
+            <input type="text" id="qrManualInput" placeholder="e.g. VN-SITE-001" class="manual-input" />
+            <button class="btn-primary" onclick="resolveQR()">Scan</button>
+          </div>
+          <div class="mock-codes">
+            <p>Demo codes:</p>
+            <div class="code-chips">
+              <span class="chip" onclick="fillQR('VN-SITE-001')">VN-SITE-001</span>
+              <span class="chip" onclick="fillQR('VN-SITE-002')">VN-SITE-002</span>
+              <span class="chip" onclick="fillQR('VN-SITE-003')">VN-SITE-003</span>
+              <span class="chip" onclick="fillQR('VN-SITE-004')">VN-SITE-004</span>
+              <span class="chip" onclick="fillQR('VN-SITE-005')">VN-SITE-005</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="qrResult" class="qr-result hidden"></div>
+      </div>
+    </section>
+
+    <!-- ── PASSPORT TAB ── -->
+    <section id="tab-passport" class="tab-section">
+      <div class="passport-cover">
+        <div class="passport-header">
+          <div class="passport-emblem">🪬</div>
+          <h2 data-en="Travel Passport" data-kn="ಪ್ರವಾಸ ಪಾಸ್‌ಪೋರ್ಟ್">Travel Passport</h2>
+          <p data-en="Karnataka Heritage Explorer" data-kn="ಕರ್ನಾಟಕ ಪರಂಪರಾ ಸಂಶೋಧಕ">Karnataka Heritage Explorer</p>
+        </div>
+        <div class="passport-stats" id="passportStats">
+          <div class="stat-box">
+            <span class="stat-num" id="stampCount">0</span>
+            <span class="stat-label" data-en="Sites Visited" data-kn="ತಾಣಗಳು">Sites Visited</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num" id="completionPct">0%</span>
+            <span class="stat-label" data-en="Complete" data-kn="ಪೂರ್ಣ">Complete</span>
+          </div>
+        </div>
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="progressBar"></div>
+        </div>
+      </div>
+
+      <div class="stamps-grid" id="stampsGrid">
+        <div class="no-stamps">
+          <p>🗺️</p>
+          <p data-en="No stamps yet — start exploring!" data-kn="ಇನ್ನು ಸ್ಟಾಂಪ್ ಇಲ್ಲ — ಪ್ರಯಾಣ ಪ್ರಾರಂಭಿಸಿ!">No stamps yet — start exploring!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── REPORT TAB ── -->
+    <section id="tab-report" class="tab-section">
+      <div class="report-form-wrap">
+        <h2 class="section-title" data-en="Report a Heritage Issue" data-kn="ಪರಂಪರಾ समस्या ವರದಿ ಮಾಡಿ">Report a Heritage Issue</h2>
+        <p class="report-sub" data-en="Help preserve Karnataka's hidden gems by reporting damage, encroachment, or neglect." data-kn="ಹಾನಿ, ಒತ್ತುವರಿ ಅಥವಾ ನಿರ್ಲಕ್ಷ್ಯ ವರದಿ ಮಾಡಿ.">Help preserve Karnataka's hidden gems by reporting damage, encroachment, or neglect.</p>
+
+        <div class="form-group">
+          <label data-en="Select Site" data-kn="ತಾಣ ಆರಿಸಿ">Select Site</label>
+          <select id="reportSiteSelect" class="form-input">
+            <option value="">-- Select Heritage Site --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label data-en="Your Location (GPS)" data-kn="ನಿಮ್ಮ ಸ್ಥಳ (GPS)">Your Location (GPS)</label>
+          <div class="gps-field">
+            <input type="text" id="reportLat" class="form-input half" placeholder="Latitude" readonly />
+            <input type="text" id="reportLng" class="form-input half" placeholder="Longitude" readonly />
+            <button class="btn-gps" onclick="captureLocation()" title="Capture GPS">📍</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label data-en="Description" data-kn="ವಿವರಣೆ">Description</label>
+          <textarea id="reportDesc" class="form-input" rows="3" placeholder="Describe the issue..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label data-en="Photo (max 500KB)" data-kn="ಫೋಟೋ (ಗರಿಷ್ಠ 500KB)">Photo (max 500KB)</label>
+          <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
+            <span id="photoLabel">📸 Tap to upload photo</span>
+            <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(event)" hidden />
+          </div>
+          <img id="photoPreview" class="photo-preview hidden" alt="Preview" />
+        </div>
+
+        <button class="btn-submit" onclick="submitReport()">
+          <span data-en="Submit Report" data-kn="ವರದಿ ಸಲ್ಲಿಸಿ">Submit Report</span>
+        </button>
+
+        <div id="reportResult" class="report-result hidden"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" onclick="switchTab('discover', this)">
+      <span class="nav-icon">🔍</span>
+      <span data-en="Discover" data-kn="ಅನ್ವೇಷಿಸಿ">Discover</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('map', this)">
+      <span class="nav-icon">🗺️</span>
+      <span data-en="Map" data-kn="ನಕ್ಷೆ">Map</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('qr', this)">
+      <span class="nav-icon">📷</span>
+      <span data-en="QR Scan" data-kn="QR ಸ್ಕ್ಯಾನ್">QR Scan</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('passport', this)">
+      <span class="nav-icon">📖</span>
+      <span data-en="Passport" data-kn="ಪಾಸ್‌ಪೋರ್ಟ್">Passport</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('report', this)">
+      <span class="nav-icon">🚨</span>
+      <span data-en="Report" data-kn="ವರದಿ">Report</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- ═══════════════ SITE DETAIL MODAL ═══════════════ -->
+<div id="siteModal" class="modal-overlay hidden" onclick="closeSiteModal(event)">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeSiteModalDirect()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,830 @@
+/* ═══════════════════════════════════════════════════════════
+   Virasat-Namma — Indian Temple Architecture Theme
+   Palette: Deep saffron, terracotta, ivory, temple gold
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --saffron:       #E8621A;
+  --saffron-deep:  #C04E0E;
+  --saffron-light: #F5956A;
+  --terracotta:    #B5451B;
+  --gold:          #D4A017;
+  --gold-light:    #F0C430;
+  --ivory:         #FAF3E8;
+  --ivory-dark:    #EDE0C8;
+  --stone:         #7A5C3E;
+  --stone-light:   #B89270;
+  --dark:          #1C1008;
+  --dark-mid:      #2E1B0A;
+  --text-dark:     #2C1810;
+  --text-mid:      #5C3D2E;
+  --text-light:    #8C6D5E;
+  --success:       #2E7D32;
+  --error:         #C62828;
+  --white:         #FFFFFF;
+
+  --radius-sm:     8px;
+  --radius-md:     14px;
+  --radius-lg:     20px;
+  --radius-xl:     28px;
+  --shadow-soft:   0 4px 20px rgba(184,90,30,0.15);
+  --shadow-card:   0 8px 30px rgba(100,40,10,0.18);
+  --transition:    all 0.28s cubic-bezier(.4,0,.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: 'Raleway', sans-serif;
+  background: var(--ivory);
+  color: var(--text-dark);
+  overflow: hidden;
+}
+
+/* ── UTILITIES ── */
+.hidden { display: none !important; }
+
+/* ── SPLASH ── */
+.splash {
+  position: fixed; inset: 0; z-index: 999;
+  background: var(--dark);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+}
+
+.splash-mandala {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 50% 50%, rgba(212,160,23,0.08) 0%, transparent 70%),
+    repeating-conic-gradient(from 0deg, rgba(212,160,23,0.04) 0deg 10deg, transparent 10deg 20deg);
+  animation: rotateMandala 30s linear infinite;
+}
+
+@keyframes rotateMandala { to { transform: rotate(360deg); } }
+
+.splash-content {
+  position: relative; z-index: 1;
+  text-align: center; padding: 2rem;
+}
+
+.splash-icon {
+  font-size: 4rem;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+
+.splash-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2rem; font-weight: 700;
+  color: var(--gold);
+  text-shadow: 0 0 30px rgba(212,160,23,0.5);
+  margin: 0.5rem 0 0.2rem;
+  letter-spacing: 2px;
+}
+
+.splash-sub {
+  font-family: 'Tiro Kannada', serif;
+  color: var(--stone-light); font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+
+.splash-tagline {
+  color: var(--saffron-light); font-size: 0.85rem;
+  letter-spacing: 1px; text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.splash-loader {
+  display: flex; gap: 8px; justify-content: center;
+}
+
+.splash-loader span {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--saffron);
+  animation: bounceDot 1.2s ease-in-out infinite;
+}
+
+.splash-loader span:nth-child(2) { animation-delay: 0.2s; }
+.splash-loader span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounceDot {
+  0%,80%,100% { transform: scale(0.7); opacity: 0.4; }
+  40%          { transform: scale(1.2); opacity: 1; }
+}
+
+/* ── MAIN APP ── */
+.app {
+  display: flex; flex-direction: column;
+  height: 100vh; overflow: hidden;
+  max-width: 480px; margin: 0 auto;
+  position: relative;
+  background: var(--ivory);
+  box-shadow: 0 0 40px rgba(0,0,0,0.3);
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.7rem 1rem;
+  background: linear-gradient(135deg, var(--dark) 0%, var(--dark-mid) 100%);
+  border-bottom: 2px solid var(--gold);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+/* Decorative temple motif on topbar */
+.topbar::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.topbar-left { display: flex; align-items: center; gap: 8px; }
+
+.topbar-icon { font-size: 1.4rem; }
+
+.topbar-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.95rem; font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 1px;
+}
+
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+
+.lang-toggle {
+  background: rgba(212,160,23,0.15); border: 1px solid var(--gold);
+  color: var(--gold); border-radius: var(--radius-sm);
+  padding: 0.25rem 0.65rem; font-size: 0.75rem; cursor: pointer;
+  font-family: 'Tiro Kannada', serif;
+  transition: var(--transition);
+}
+
+.lang-toggle:hover { background: var(--gold); color: var(--dark); }
+
+.gps-indicator {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.7rem; color: var(--stone-light);
+}
+
+.gps-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #888;
+  transition: background 0.5s;
+}
+
+.gps-dot.active { background: #4CAF50; animation: pulse 2s infinite; }
+.gps-dot.error  { background: #F44336; }
+
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(76,175,80,0.4); }
+  70%      { box-shadow: 0 0 0 6px rgba(76,175,80,0); }
+}
+
+/* ── LOCATION BADGE ── */
+.location-badge {
+  background: var(--dark-mid); color: var(--ivory-dark);
+  padding: 0.3rem 1rem; font-size: 0.72rem;
+  display: flex; align-items: center; gap: 6px;
+  border-bottom: 1px solid rgba(212,160,23,0.2);
+  flex-shrink: 0;
+}
+
+/* ── MAIN CONTENT ── */
+.main-content {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  position: relative;
+}
+
+/* Custom scrollbar */
+.main-content::-webkit-scrollbar { width: 4px; }
+.main-content::-webkit-scrollbar-track { background: var(--ivory-dark); }
+.main-content::-webkit-scrollbar-thumb { background: var(--saffron-light); border-radius: 4px; }
+
+.tab-section { display: none; min-height: 100%; }
+.tab-section.active { display: block; }
+
+/* ── SECTION HEADER ── */
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1rem 0.5rem;
+}
+
+.section-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1rem; color: var(--terracotta);
+  letter-spacing: 0.5px;
+}
+
+.radius-control {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.75rem; color: var(--text-mid);
+}
+
+.radius-control select {
+  border: 1px solid var(--ivory-dark);
+  background: var(--white); border-radius: 6px;
+  padding: 0.2rem 0.4rem; font-size: 0.75rem;
+  color: var(--text-dark); cursor: pointer;
+}
+
+/* ── SITES GRID ── */
+.sites-grid {
+  padding: 0.5rem 1rem 1rem;
+  display: grid; gap: 1rem;
+}
+
+.loading-sites {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 1rem; padding: 3rem; color: var(--text-mid);
+}
+
+.spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--ivory-dark);
+  border-top-color: var(--saffron);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── SITE CARD ── */
+.site-card {
+  background: var(--white); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden; cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid var(--ivory-dark);
+  position: relative;
+}
+
+.site-card:hover, .site-card:active {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(100,40,10,0.22);
+}
+
+/* Temple arch decoration on top of card */
+.site-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--terracotta), var(--gold), var(--terracotta));
+}
+
+.card-image {
+  height: 140px; background: var(--ivory-dark);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.card-image-placeholder {
+  font-size: 3.5rem; opacity: 0.6;
+}
+
+.card-badge {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(28,16,8,0.8); color: var(--gold);
+  font-size: 0.65rem; padding: 3px 8px; border-radius: 20px;
+  font-family: 'Raleway', sans-serif; letter-spacing: 0.5px;
+  border: 1px solid rgba(212,160,23,0.4);
+}
+
+.card-distance {
+  position: absolute; top: 8px; left: 8px;
+  background: rgba(232,98,26,0.9); color: white;
+  font-size: 0.65rem; padding: 3px 8px; border-radius: 20px;
+}
+
+.card-body { padding: 0.85rem; }
+
+.card-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.85rem; color: var(--dark);
+  margin-bottom: 0.25rem; line-height: 1.3;
+}
+
+.card-title-kn {
+  font-family: 'Tiro Kannada', serif;
+  font-size: 0.8rem; color: var(--stone);
+  margin-bottom: 0.4rem;
+}
+
+.card-desc {
+  font-size: 0.78rem; color: var(--text-mid);
+  line-height: 1.5; margin-bottom: 0.6rem;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.card-meta {
+  display: flex; align-items: center; gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.meta-tag {
+  background: var(--ivory); color: var(--stone);
+  font-size: 0.65rem; padding: 2px 8px; border-radius: 20px;
+  border: 1px solid var(--ivory-dark);
+}
+
+.card-actions {
+  display: flex; gap: 8px; padding: 0 0.85rem 0.85rem;
+}
+
+.btn-checkin, .btn-info {
+  flex: 1; padding: 0.5rem;
+  border-radius: var(--radius-sm); border: none;
+  font-family: 'Raleway', sans-serif; font-size: 0.78rem; font-weight: 600;
+  cursor: pointer; transition: var(--transition);
+}
+
+.btn-checkin {
+  background: linear-gradient(135deg, var(--saffron), var(--saffron-deep));
+  color: white;
+}
+
+.btn-checkin:hover { filter: brightness(1.1); }
+.btn-checkin.checked { background: var(--success); }
+
+.btn-info {
+  background: var(--ivory-dark); color: var(--text-dark);
+}
+
+.btn-info:hover { background: var(--stone-light); color: white; }
+
+/* ── MAP ── */
+#map {
+  height: calc(100vh - 200px); width: 100%;
+}
+
+.map-legend {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0.5rem 1rem; background: var(--white);
+  font-size: 0.72rem; color: var(--text-mid);
+  border-top: 1px solid var(--ivory-dark);
+}
+
+.legend-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-dot.reported { background: #F44336; border-radius: 50%; }
+.legend-dot.active   { background: var(--saffron); border-radius: 50%; }
+.legend-dot.cleaned  { background: var(--success); border-radius: 50%; }
+
+/* ── QR SCANNER ── */
+.qr-container {
+  padding: 1.5rem 1rem;
+  display: flex; flex-direction: column; align-items: center; gap: 1.2rem;
+}
+
+.qr-frame {
+  width: 240px; height: 240px;
+  position: relative; border-radius: 16px;
+  background: var(--dark-mid);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.qr-corner {
+  position: absolute; width: 28px; height: 28px;
+  border-color: var(--gold); border-style: solid;
+}
+
+.qr-corner.tl { top: 12px; left: 12px; border-width: 3px 0 0 3px; border-radius: 4px 0 0 0; }
+.qr-corner.tr { top: 12px; right: 12px; border-width: 3px 3px 0 0; border-radius: 0 4px 0 0; }
+.qr-corner.bl { bottom: 12px; left: 12px; border-width: 0 0 3px 3px; border-radius: 0 0 0 4px; }
+.qr-corner.br { bottom: 12px; right: 12px; border-width: 0 3px 3px 0; border-radius: 0 0 4px 0; }
+
+.qr-scan-line {
+  position: absolute; left: 16px; right: 16px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--saffron), transparent);
+  animation: scanLine 2.5s ease-in-out infinite;
+  top: 20px;
+}
+
+@keyframes scanLine {
+  0%   { top: 20px; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: calc(100% - 20px); opacity: 0; }
+}
+
+.qr-placeholder { text-align: center; color: var(--stone-light); }
+.qr-placeholder span { font-size: 2.5rem; }
+.qr-placeholder p { font-size: 0.8rem; margin-top: 0.5rem; }
+
+.qr-sub {
+  text-align: center; font-size: 0.8rem; color: var(--text-mid);
+  max-width: 280px; line-height: 1.5;
+}
+
+.manual-qr {
+  width: 100%;
+  background: var(--white); border-radius: var(--radius-md);
+  padding: 1rem; border: 1px solid var(--ivory-dark);
+}
+
+.manual-label {
+  text-align: center; font-size: 0.72rem; color: var(--text-light);
+  margin-bottom: 0.8rem;
+}
+
+.manual-input-row {
+  display: flex; gap: 8px;
+}
+
+.manual-input {
+  flex: 1; padding: 0.55rem 0.75rem;
+  border: 1.5px solid var(--ivory-dark); border-radius: var(--radius-sm);
+  font-size: 0.85rem; font-family: monospace;
+  transition: var(--transition);
+  background: var(--ivory);
+}
+
+.manual-input:focus { outline: none; border-color: var(--saffron); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--saffron), var(--saffron-deep));
+  color: white; border: none; border-radius: var(--radius-sm);
+  padding: 0.55rem 1rem; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: var(--transition);
+  font-family: 'Raleway', sans-serif;
+}
+
+.btn-primary:hover { filter: brightness(1.1); }
+
+.mock-codes { margin-top: 0.8rem; }
+.mock-codes p { font-size: 0.7rem; color: var(--text-light); margin-bottom: 6px; }
+
+.code-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.chip {
+  background: var(--ivory-dark); color: var(--text-mid);
+  font-size: 0.68rem; padding: 3px 10px; border-radius: 20px;
+  cursor: pointer; font-family: monospace;
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+
+.chip:hover { background: var(--saffron); color: white; }
+
+.qr-result {
+  width: 100%; padding: 1rem;
+  background: linear-gradient(135deg, var(--dark), var(--dark-mid));
+  border-radius: var(--radius-md); color: var(--ivory);
+  border: 1px solid var(--gold);
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.hidden-fact-banner {
+  background: linear-gradient(135deg, var(--gold), var(--saffron));
+  border-radius: var(--radius-sm); padding: 0.75rem;
+  color: var(--dark); font-size: 0.82rem; line-height: 1.5;
+  margin-top: 0.75rem;
+}
+
+.hidden-fact-banner strong { display: block; margin-bottom: 4px; }
+
+/* ── TRAVEL PASSPORT ── */
+.passport-cover {
+  background: linear-gradient(160deg, var(--dark) 0%, #3D1C0A 100%);
+  padding: 1.5rem 1rem 1.2rem;
+  position: relative; overflow: hidden;
+}
+
+.passport-cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(212,160,23,0.04) 0px, rgba(212,160,23,0.04) 1px,
+    transparent 1px, transparent 16px
+  );
+}
+
+.passport-header {
+  text-align: center; position: relative; z-index: 1;
+  margin-bottom: 1rem;
+}
+
+.passport-emblem { font-size: 2.5rem; }
+
+.passport-header h2 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.1rem; color: var(--gold);
+  margin: 0.3rem 0 0.2rem;
+}
+
+.passport-header p {
+  font-size: 0.75rem; color: var(--stone-light);
+  letter-spacing: 1px; text-transform: uppercase;
+}
+
+.passport-stats {
+  display: flex; gap: 1rem; justify-content: center;
+  position: relative; z-index: 1; margin-bottom: 0.75rem;
+}
+
+.stat-box {
+  background: rgba(212,160,23,0.1); border: 1px solid rgba(212,160,23,0.3);
+  border-radius: var(--radius-md); padding: 0.6rem 1.5rem;
+  text-align: center;
+}
+
+.stat-num {
+  display: block; font-family: 'Cinzel Decorative', serif;
+  font-size: 1.6rem; color: var(--gold); line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.7rem; color: var(--stone-light);
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+.progress-bar-outer {
+  background: rgba(255,255,255,0.1); border-radius: 20px;
+  height: 6px; margin: 0 0.5rem;
+  position: relative; z-index: 1;
+}
+
+.progress-bar-inner {
+  height: 100%; border-radius: 20px;
+  background: linear-gradient(90deg, var(--saffron), var(--gold));
+  width: 0%; transition: width 1s ease;
+}
+
+.stamps-grid {
+  padding: 1rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+}
+
+.stamp-card {
+  background: var(--white); border-radius: var(--radius-md);
+  padding: 0.85rem; border: 1.5px solid var(--ivory-dark);
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+}
+
+.stamp-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(212,160,23,0.06), transparent 70%);
+}
+
+.stamp-emoji { font-size: 1.8rem; margin-bottom: 0.4rem; }
+
+.stamp-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.65rem; color: var(--text-dark); line-height: 1.3;
+  margin-bottom: 0.3rem;
+}
+
+.stamp-date {
+  font-size: 0.6rem; color: var(--text-light);
+}
+
+.stamp-badge {
+  position: absolute; top: 6px; right: 6px;
+  background: var(--saffron); color: white;
+  font-size: 0.55rem; padding: 2px 6px; border-radius: 10px;
+}
+
+.no-stamps {
+  grid-column: 1 / -1;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0.5rem; padding: 3rem; color: var(--text-light);
+  font-size: 0.85rem; text-align: center;
+}
+
+.no-stamps p:first-child { font-size: 2.5rem; }
+
+/* ── REPORT FORM ── */
+.report-form-wrap { padding: 1rem; }
+
+.report-sub {
+  font-size: 0.8rem; color: var(--text-mid);
+  margin-bottom: 1.2rem; line-height: 1.5;
+}
+
+.form-group { margin-bottom: 1rem; }
+
+.form-group label {
+  display: block; font-size: 0.78rem; font-weight: 600;
+  color: var(--text-dark); margin-bottom: 0.4rem;
+}
+
+.form-input {
+  width: 100%; padding: 0.6rem 0.85rem;
+  border: 1.5px solid var(--ivory-dark);
+  border-radius: var(--radius-sm); background: var(--white);
+  font-family: 'Raleway', sans-serif; font-size: 0.85rem;
+  color: var(--text-dark); transition: var(--transition);
+}
+
+.form-input:focus { outline: none; border-color: var(--saffron); }
+
+.form-input.half { width: auto; flex: 1; }
+
+textarea.form-input { resize: vertical; min-height: 80px; }
+
+.gps-field { display: flex; gap: 8px; align-items: center; }
+
+.btn-gps {
+  background: var(--saffron); border: none; border-radius: var(--radius-sm);
+  width: 40px; height: 40px; font-size: 1.1rem; cursor: pointer;
+  transition: var(--transition); flex-shrink: 0;
+}
+
+.btn-gps:hover { background: var(--saffron-deep); }
+
+.photo-upload-area {
+  width: 100%; height: 80px;
+  border: 2px dashed var(--ivory-dark); border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-mid); font-size: 0.85rem;
+  transition: var(--transition);
+}
+
+.photo-upload-area:hover { border-color: var(--saffron); color: var(--saffron); }
+
+.photo-preview {
+  width: 100%; max-height: 180px; object-fit: cover;
+  border-radius: var(--radius-md); margin-top: 0.5rem;
+}
+
+.btn-submit {
+  width: 100%; padding: 0.85rem;
+  background: linear-gradient(135deg, var(--terracotta), var(--saffron-deep));
+  color: white; border: none; border-radius: var(--radius-md);
+  font-family: 'Cinzel Decorative', serif; font-size: 0.9rem;
+  cursor: pointer; transition: var(--transition);
+  letter-spacing: 1px;
+}
+
+.btn-submit:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+.report-result {
+  margin-top: 1rem; padding: 1rem; border-radius: var(--radius-md);
+  font-size: 0.85rem; line-height: 1.5;
+  animation: slideUp 0.4s ease;
+}
+
+.report-result.success { background: #E8F5E9; color: var(--success); border: 1px solid #A5D6A7; }
+.report-result.error   { background: #FFEBEE; color: var(--error); border: 1px solid #EF9A9A; }
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  display: flex; background: var(--dark);
+  border-top: 2px solid var(--gold);
+  flex-shrink: 0;
+}
+
+/* Decorative top shimmer on nav */
+.bottom-nav::before {
+  content: '';
+  position: absolute; bottom: 100%; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.nav-btn {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 3px; padding: 0.6rem 0.2rem;
+  background: none; border: none; cursor: pointer;
+  color: var(--stone-light); font-size: 0.6rem;
+  font-family: 'Raleway', sans-serif; font-weight: 600;
+  letter-spacing: 0.3px; text-transform: uppercase;
+  transition: var(--transition); position: relative;
+}
+
+.nav-btn.active { color: var(--gold); }
+.nav-btn.active::before {
+  content: '';
+  position: absolute; top: 0; left: 25%; right: 25%; height: 2px;
+  background: var(--gold); border-radius: 0 0 4px 4px;
+}
+
+.nav-btn:hover { color: var(--saffron-light); }
+
+.nav-icon { font-size: 1.2rem; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(28,16,8,0.75); backdrop-filter: blur(4px);
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 0;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-card {
+  background: var(--ivory); border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  width: 100%; max-width: 480px; max-height: 88vh;
+  overflow-y: auto; padding: 1.5rem;
+  position: relative;
+  animation: slideUp 0.35s cubic-bezier(.4,0,.2,1);
+}
+
+/* Temple arch top border */
+.modal-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--terracotta), var(--gold), var(--terracotta));
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.modal-close {
+  position: absolute; top: 1.2rem; right: 1.2rem;
+  background: var(--ivory-dark); border: none; border-radius: 50%;
+  width: 32px; height: 32px; cursor: pointer;
+  font-size: 0.9rem; color: var(--text-mid);
+  transition: var(--transition); z-index: 1;
+}
+
+.modal-close:hover { background: var(--saffron); color: white; }
+
+/* Modal content styles */
+.modal-site-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.1rem; color: var(--terracotta); margin-bottom: 0.2rem;
+  padding-right: 2rem;
+}
+
+.modal-site-kn {
+  font-family: 'Tiro Kannada', serif;
+  font-size: 0.9rem; color: var(--stone); margin-bottom: 1rem;
+}
+
+.modal-divider {
+  height: 1px; background: linear-gradient(90deg, var(--terracotta), transparent);
+  margin: 0.8rem 0;
+}
+
+.modal-section-title {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--saffron);
+  margin-bottom: 0.35rem;
+}
+
+.modal-text {
+  font-size: 0.83rem; color: var(--text-mid); line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.modal-meta-row {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem;
+}
+
+.modal-tag {
+  background: var(--ivory); border: 1px solid var(--ivory-dark);
+  color: var(--stone); font-size: 0.68rem; padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.modal-actions { display: flex; gap: 10px; margin-top: 1.2rem; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+  background: var(--dark); color: var(--ivory);
+  padding: 0.65rem 1.25rem; border-radius: var(--radius-md);
+  font-size: 0.82rem; z-index: 999;
+  border: 1px solid var(--gold);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  animation: toastIn 0.3s ease;
+  white-space: nowrap; max-width: 90vw;
+}
+
+@keyframes toastIn {
+  from { transform: translateX(-50%) translateY(10px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* ── CUSTOM LEAFLET MARKERS ── */
+.custom-marker {
+  background: var(--saffron); border: 2px solid white;
+  border-radius: 50% 50% 50% 0; width: 28px; height: 28px;
+  transform: rotate(-45deg);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem;
+}
+
+/* ── RESPONSIVE ── */
+@media (min-width: 480px) {
+  body { background: #111; }
+}
